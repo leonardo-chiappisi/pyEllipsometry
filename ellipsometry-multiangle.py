@@ -88,10 +88,17 @@ for filename in sorted(os.listdir(basepath)):
                 psi, delta = ell(out.params,data[:,0],wl)
                 x, y = psidelta_in_xy(psi, delta)
                 print(fit_report(out))
+                
+                plt.figure()
                 plt.plot(data[:,0], np.asarray(y[:]), label='y')
                 plt.plot(data[:,0], np.asarray(x[:]), label='x')
+                plt.xlabel('Angle / deg')
+                plt.ylabel('x, y')
                 plt.plot(data[:,0], data[:,1], 'ro')
-                plt.plot(data[:,0], data[:,2], 'bs')               
+                plt.plot(data[:,0], data[:,2], 'bs')
+                plt.legend()
+                plt.savefig(os.path.join(basepath, filename.split('_xy')[0] + '.pdf'))
+                plt.close()
                 
                 outfile = 'fit-' + filename.split('_xy')[0] + '.dat'
                 np.savetxt(os.path.join(basepath, outfile), np.transpose([data[:,0],  np.asarray(delta[:])*180./np.pi,  np.asarray(psi[:])*180./np.pi]), delimiter="\t")
@@ -112,11 +119,17 @@ for filename in sorted(os.listdir(basepath)):
                 psi, delta = ell(out.params,data[:,0],wl)
                 print(fit_report(out))
 
+                plt.figure()
                 plt.plot(data[:,0], np.asarray(psi[:])*180./np.pi)
                 plt.plot(data[:,0], np.asarray(delta[:])*180./np.pi)
-                plt.plot(data[:,0], data[:,1]*180./np.pi, 'ro')
-                plt.plot(data[:,0], data[:,2]*180./np.pi, 'bs')
-         
+                plt.plot(data[:,0], data[:,1]*180./np.pi, 'ro', label='psi')
+                plt.plot(data[:,0], data[:,2]*180./np.pi, 'bs', label='delta')
+                plt.xlabel('Angle / deg')
+                plt.ylabel('Psi, Delta / deg')
+                plt.legend()
+                plt.savefig(os.path.join(basepath, filename.split('_epd')[0] + '.pdf'))
+                plt.close()
+                
                 outfile = 'fit-' + filename.split('_epd')[0] + '.dat'
                 np.savetxt(os.path.join(basepath,outfile), np.transpose([data[:,0],  np.asarray(delta[:])*180./np.pi,  np.asarray(psi[:])*180./np.pi]), delimiter="\t")
                     
